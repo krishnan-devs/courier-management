@@ -16,7 +16,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 import java.util.List;
 
 @Configuration
@@ -45,7 +44,10 @@ public class SecurityConfig {
                                 SessionCreationPolicy.STATELESS
                         )
                 )
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                .cors(cors ->
+                        cors.configurationSource(corsConfigurationSource())
+                )
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -59,6 +61,10 @@ public class SecurityConfig {
                         // ===============================
                         // Public APIs
                         // ===============================
+
+                        // Health check
+                        .requestMatchers("/health")
+                        .permitAll()
 
                         .requestMatchers("/api/auth/**")
                         .permitAll()
@@ -74,7 +80,6 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-
                         // ===============================
                         // Admin APIs
                         // ===============================
@@ -82,46 +87,44 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**")
                         .hasRole("ADMIN")
 
-
                         // ===============================
                         // Staff APIs
                         // ===============================
 
-                                // Admin staff management
-                                .requestMatchers(
-                                        org.springframework.http.HttpMethod.GET,
-                                        "/api/staff"
-                                )
-                                .hasRole("ADMIN")
+                        // Admin staff management
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.GET,
+                                "/api/staff"
+                        )
+                        .hasRole("ADMIN")
 
-                                .requestMatchers(
-                                        org.springframework.http.HttpMethod.GET,
-                                        "/api/staff/{id}"
-                                )
-                                .hasRole("ADMIN")
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.GET,
+                                "/api/staff/{id}"
+                        )
+                        .hasRole("ADMIN")
 
-                                .requestMatchers(
-                                        org.springframework.http.HttpMethod.POST,
-                                        "/api/staff"
-                                )
-                                .hasRole("ADMIN")
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.POST,
+                                "/api/staff"
+                        )
+                        .hasRole("ADMIN")
 
-                                .requestMatchers(
-                                        org.springframework.http.HttpMethod.PUT,
-                                        "/api/staff/{id}"
-                                )
-                                .hasRole("ADMIN")
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.PUT,
+                                "/api/staff/{id}"
+                        )
+                        .hasRole("ADMIN")
 
-                                .requestMatchers(
-                                        org.springframework.http.HttpMethod.DELETE,
-                                        "/api/staff/{id}"
-                                )
-                                .hasRole("ADMIN")
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.DELETE,
+                                "/api/staff/{id}"
+                        )
+                        .hasRole("ADMIN")
 
-                                // Staff dashboard
-                                .requestMatchers("/api/staff/dashboard")
-                                .hasRole("STAFF")
-
+                        // Staff dashboard
+                        .requestMatchers("/api/staff/dashboard")
+                        .hasRole("STAFF")
 
                         // ===============================
                         // Customer APIs
@@ -130,27 +133,20 @@ public class SecurityConfig {
                         .requestMatchers("/api/customer/**")
                         .hasRole("CUSTOMER")
 
-
                         // ===============================
                         // Delivery Staff Management
                         // ===============================
 
-                        .requestMatchers(
-                                "/api/delivery-staff"
-                        )
+                        .requestMatchers("/api/delivery-staff")
                         .hasRole("ADMIN")
 
-                        .requestMatchers(
-                                "/api/delivery-staff/**"
-                        )
+                        .requestMatchers("/api/delivery-staff/**")
                         .hasAnyRole("ADMIN", "STAFF")
-
 
                         // ===============================
                         // Shipment APIs
                         // ===============================
 
-                        // Customers can create/book shipments
                         .requestMatchers(
                                 org.springframework.http.HttpMethod.POST,
                                 "/api/shipments"
@@ -160,26 +156,18 @@ public class SecurityConfig {
                         .requestMatchers("/api/shipments/**")
                         .hasAnyRole("ADMIN", "STAFF")
 
-
                         // ===============================
                         // Assignment APIs
                         // ===============================
 
-                        .requestMatchers(
-                                "/api/assignments/assign"
-                        )
+                        .requestMatchers("/api/assignments/assign")
                         .hasRole("ADMIN")
 
-                        .requestMatchers(
-                                "/api/assignments/*/status"
-                        )
+                        .requestMatchers("/api/assignments/*/status")
                         .hasRole("STAFF")
 
-                        .requestMatchers(
-                                "/api/assignments/**"
-                        )
+                        .requestMatchers("/api/assignments/**")
                         .hasAnyRole("ADMIN", "STAFF")
-
 
                         // ===============================
                         // Delivery APIs
@@ -188,16 +176,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/deliveries/**")
                         .hasAnyRole("ADMIN", "STAFF")
 
-
                         // ===============================
                         // Notification APIs
                         // ===============================
 
-                        .requestMatchers(
-                                "/api/notifications/**"
-                        )
+                        .requestMatchers("/api/notifications/**")
                         .hasAnyRole("ADMIN", "STAFF", "CUSTOMER")
-
 
                         // ===============================
                         // Tracking APIs
@@ -205,7 +189,6 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/tracking/**")
                         .permitAll()
-
 
                         // ===============================
                         // Everything else
