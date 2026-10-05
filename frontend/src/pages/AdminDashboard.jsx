@@ -16,8 +16,11 @@ function AdminDashboard() {
         cancelled: 0
     });
 
+    const [notifications, setNotifications] = useState([]);
+
     useEffect(() => {
         fetchDashboard();
+        fetchNotifications();
     }, []);
 
     const fetchDashboard = async () => {
@@ -36,8 +39,10 @@ function AdminDashboard() {
 
             console.error("Dashboard error:", error);
 
-            if (error.response?.status === 401 ||
-                error.response?.status === 403) {
+            if (
+                error.response?.status === 401 ||
+                error.response?.status === 403
+            ) {
 
                 alert("You are not authorized to access Admin Dashboard.");
 
@@ -46,8 +51,59 @@ function AdminDashboard() {
         }
     };
 
+    const fetchNotifications = async () => {
+
+        try {
+
+            const userId = localStorage.getItem("userId");
+
+            if (!userId) {
+                console.warn("Admin userId not found.");
+                return;
+            }
+
+            const response = await api.get(
+                `/api/notifications/user/${userId}`
+            );
+
+            console.log("Admin Notifications:", response.data);
+
+            setNotifications(response.data || []);
+
+        } catch (error) {
+
+            console.error("Notification error:", error);
+
+        }
+    };
+
+    const markAsRead = async (notificationId) => {
+
+        try {
+
+            await api.put(
+                `/api/notifications/${notificationId}/read`
+            );
+
+            setNotifications((previousNotifications) =>
+                previousNotifications.map((notification) =>
+                    notification.id === notificationId
+                        ? { ...notification, read: true }
+                        : notification
+                )
+            );
+
+        } catch (error) {
+
+            console.error("Mark notification as read error:", error);
+
+        }
+    };
+
     return (
         <div className="admin-dashboard">
+
+            {/* HEADER */}
 
             <div className="admin-header">
 
@@ -59,6 +115,9 @@ function AdminDashboard() {
                 <LogoutButton />
 
             </div>
+
+
+            {/* DASHBOARD CARDS */}
 
             <div className="dashboard-cards">
 
@@ -89,19 +148,169 @@ function AdminDashboard() {
 
             </div>
 
+
+            {/* ADMIN ACTIONS */}
+
             <div className="admin-actions">
 
-                <button onClick={() => navigate("/admin/deliveries")}>
-                    Manage Deliveries
+                <button
+                    className="admin-action-card"
+                    onClick={() => navigate("/admin/deliveries")}
+                >
+
+                    <div className="admin-action-icon">
+                        🚚
+                    </div>
+
+                    <div className="admin-action-content">
+
+                        <h3>Manage Deliveries</h3>
+
+                        <p>
+                            Assign shipments and manage delivery status.
+                        </p>
+
+                        <span>
+                            Open Deliveries →
+                        </span>
+
+                    </div>
+
                 </button>
 
-                <button onClick={() => navigate("/admin/staff")}>
-                    Manage Staff
+
+                <button
+                    className="admin-action-card"
+                    onClick={() => navigate("/admin/staff")}
+                >
+
+                    <div className="admin-action-icon">
+                        👨‍💼
+                    </div>
+
+                    <div className="admin-action-content">
+
+                        <h3>Manage Staff</h3>
+
+                        <p>
+                            Create, update and manage courier staff.
+                        </p>
+
+                        <span>
+                            Open Staff →
+                        </span>
+
+                    </div>
+
                 </button>
 
-                <button onClick={() => navigate("/admin/shipments")}>
-                    Manage Shipments
+
+                <button
+                    className="admin-action-card"
+                    onClick={() => navigate("/admin/shipments")}
+                >
+
+                    <div className="admin-action-icon">
+                        📦
+                    </div>
+
+                    <div className="admin-action-content">
+
+                        <h3>Manage Shipments</h3>
+
+                        <p>
+                            View and manage all courier shipments.
+                        </p>
+
+                        <span>
+                            Open Shipments →
+                        </span>
+
+                    </div>
+
                 </button>
+
+            </div>
+
+
+            {/* NOTIFICATIONS */}
+
+            <div className="admin-notifications">
+
+                <div className="notifications-header">
+
+                    <div>
+                        <h2>Recent Notifications</h2>
+                        <p>Latest courier system notifications</p>
+                    </div>
+
+                    <button
+                        className="view-all-button"
+                        onClick={() => navigate("/admin/notifications")}
+                    >
+                        View All
+                    </button>
+
+                </div>
+
+
+                {notifications.length === 0 ? (
+
+                    <div className="no-notifications">
+                        No notifications available.
+                    </div>
+
+                ) : (
+
+                    <div className="notification-list">
+
+                        {notifications.slice(0, 5).map((notification) => (
+
+                            <div
+                                key={notification.id}
+                                className={`notification-item ${
+                                    notification.read
+                                        ? "notification-read"
+                                        : "notification-unread"
+                                }`}
+                            >
+
+                                <div className="notification-icon">
+                                    🔔
+                                </div>
+
+                                <div className="notification-content">
+
+                                    <h3>
+                                        {notification.title}
+                                    </h3>
+
+                                    <p>
+                                        {notification.message}
+                                    </p>
+
+                                </div>
+
+                                {!notification.read && (
+
+                                    <button
+                                        className="mark-read-button"
+                                        onClick={() =>
+                                            markAsRead(notification.id)
+                                        }
+                                    >
+                                        Mark as Read
+                                    </button>
+
+                                )}
+
+                            </div>
+
+                        ))}
+
+                    </div>
+
+                )}
 
             </div>
 
