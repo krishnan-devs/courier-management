@@ -1,0 +1,755 @@
+.admin-deliveries {
+    min-height: 100vh;
+    padding: 30px;
+    background: #f5f7fb;
+}
+
+/* Header */
+
+.deliveries-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.deliveries-header h1 {
+    margin: 0;
+    font-size: 30px;
+    color: #1f2937;
+}
+
+.deliveries-header p {
+    margin-top: 8px;
+    color: #6b7280;
+}
+
+/* Back Button */
+
+.back-dashboard-button {
+    border: none;
+    background: white;
+    color: #374151;
+    padding: 11px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+}
+
+.back-dashboard-button:hover {
+    background: #f3f4f6;
+    transform: translateY(-1px);
+}
+
+/* Messages */
+
+.delivery-error {
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 9px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 600;
+    border: 1px solid #fecaca;
+}
+
+.delivery-success {
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 9px;
+    background: #dcfce7;
+    color: #166534;
+    font-weight: 600;
+    border: 1px solid #bbf7d0;
+}
+
+/* Main Container */
+
+.delivery-list-container {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* List Header */
+
+.delivery-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.delivery-list-header h2 {
+    margin: 0;
+    color: #1f2937;
+}
+
+.delivery-list-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+}
+
+.delivery-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Buttons */
+
+.refresh-deliveries-button,
+.assign-delivery-button,
+.empty-assign-button {
+    border: none;
+    color: white;
+    padding: 10px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.refresh-deliveries-button {
+    background: #2563eb;
+}
+
+.refresh-deliveries-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.assign-delivery-button {
+    background: #16a34a;
+}
+
+.assign-delivery-button:hover {
+    background: #15803d;
+    transform: translateY(-1px);
+}
+
+.empty-assign-button {
+    margin-top: 20px;
+    background: #2563eb;
+}
+
+.empty-assign-button:hover {
+    background: #1d4ed8;
+}
+
+/* Loading */
+
+.delivery-loading-page {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.delivery-loading-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.delivery-loading-page h2 {
+    margin: 0;
+    color: #374151;
+}
+
+.delivery-loading-page p {
+    color: #6b7280;
+}
+
+/* Empty */
+
+.delivery-empty {
+    text-align: center;
+    padding: 70px 20px;
+}
+
+.delivery-empty-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.delivery-empty h3 {
+    margin: 0 0 8px;
+    color: #374151;
+}
+
+.delivery-empty p {
+    margin: 0;
+    color: #6b7280;
+}
+
+/* Table */
+
+.delivery-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.delivery-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+}
+
+.delivery-table th {
+    text-align: left;
+    padding: 14px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.delivery-table td {
+    padding: 15px 14px;
+    border-bottom: 1px solid #eef2f7;
+    color: #374151;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.delivery-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.delivery-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.delivery-table td > strong {
+    color: #2563eb;
+}
+
+/* Primary Info */
+
+.delivery-primary-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.delivery-primary-info strong {
+    color: #1f2937;
+}
+
+.delivery-primary-info span {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* Status */
+
+.delivery-status {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.delivery-status.not-assigned {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.delivery-status.assigned {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.delivery-status.picked-up {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.delivery-status.in-transit {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.delivery-status.delivered {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.delivery-status.cancelled {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.delivery-status.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Actions */
+
+.delivery-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.delivery-actions button {
+    border: none;
+    padding: 7px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.view-delivery-button {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.view-delivery-button:hover {
+    background: #dbeafe;
+}
+
+.assign-action-button {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.assign-action-button:hover {
+    background: #d1fae5;
+}
+
+.status-action-button {
+    background: #f5f3ff;
+    color: #6d28d9;
+}
+
+.status-action-button:hover {
+    background: #ede9fe;
+}
+
+.delete-delivery-button {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.delete-delivery-button:hover {
+    background: #fee2e2;
+}
+
+/* Modal Overlay */
+
+.delivery-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.58);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+/* General Modal */
+
+.delivery-modal {
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.assignment-modal,
+.status-modal {
+    max-width: 500px;
+}
+
+/* Modal Header */
+
+.delivery-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.delivery-modal-header h2 {
+    margin: 0;
+    color: #1f2937;
+}
+
+.delivery-modal-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.modal-close-button {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background: #f3f4f6;
+    color: #374151;
+    border-radius: 8px;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal-close-button:hover {
+    background: #e5e7eb;
+}
+
+/* Details */
+
+.delivery-details-grid {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.detail-card {
+    padding: 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.detail-card h3 {
+    margin: 0 0 16px;
+    color: #1f2937;
+    font-size: 16px;
+}
+
+.detail-card p {
+    margin: 0;
+    padding: 9px 0;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-card p:last-child {
+    border-bottom: none;
+}
+
+.detail-card p > span:first-child {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.detail-card strong {
+    color: #374151;
+    font-size: 13px;
+    word-break: break-word;
+}
+
+/* Forms */
+
+form {
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    background: white;
+    color: #1f2937;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 7px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* Status Warning */
+
+.status-warning {
+    margin: 0 24px 5px;
+    padding: 13px 15px;
+    border-radius: 9px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Modal Footer */
+
+.delivery-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px 24px;
+}
+
+.modal-secondary-button,
+.modal-primary-button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.modal-secondary-button {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.modal-secondary-button:hover {
+    background: #e5e7eb;
+}
+
+.modal-primary-button {
+    background: #2563eb;
+    color: white;
+}
+
+.modal-primary-button:hover {
+    background: #1d4ed8;
+}
+
+.modal-primary-button:disabled,
+.modal-secondary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Delete Modal */
+
+.delete-delivery-modal {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.delete-delivery-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fee2e2;
+    border-radius: 50%;
+    font-size: 30px;
+}
+
+.delete-delivery-modal h2 {
+    margin: 0 0 10px;
+    color: #1f2937;
+}
+
+.delete-delivery-modal > p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.delete-delivery-info {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 9px;
+    background: #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.delete-delivery-info span {
+    color: #6b7280;
+}
+
+.delete-delivery-info strong {
+    color: #1f2937;
+}
+
+.delete-delivery-warning {
+    margin-top: 15px;
+    padding: 11px;
+    border-radius: 8px;
+    background: #fff7ed;
+    color: #c2410c;
+    font-size: 13px;
+}
+
+.delete-delivery-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.confirm-delete-delivery-button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    background: #dc2626;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.confirm-delete-delivery-button:hover {
+    background: #b91c1c;
+}
+
+.confirm-delete-delivery-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+
+@media (max-width: 1000px) {
+
+    .delivery-details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .admin-deliveries {
+        padding: 20px;
+    }
+
+    .deliveries-header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .deliveries-header h1 {
+        font-size: 24px;
+    }
+
+    .delivery-list-container {
+        padding: 18px;
+    }
+
+    .delivery-list-header {
+        align-items: flex-start;
+        gap: 15px;
+        flex-direction: column;
+    }
+
+    .delivery-header-actions {
+        width: 100%;
+    }
+
+    .assign-delivery-button,
+    .refresh-deliveries-button {
+        flex: 1;
+    }
+
+    .delivery-table {
+        min-width: 1100px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .admin-deliveries {
+        padding: 15px;
+    }
+
+    .deliveries-header {
+        flex-direction: column;
+    }
+
+    .deliveries-header h1 {
+        font-size: 22px;
+    }
+
+    .delivery-header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .assign-delivery-button,
+    .refresh-deliveries-button {
+        width: 100%;
+    }
+
+    .delivery-list-container {
+        padding: 15px;
+    }
+
+    .delivery-modal-overlay {
+        padding: 10px;
+    }
+
+    .delivery-modal-header,
+    form {
+        padding: 18px;
+    }
+
+    .delivery-details-grid {
+        padding: 18px;
+    }
+
+    .delivery-modal-footer {
+        padding: 15px 18px 18px;
+    }
+
+    .delete-delivery-modal {
+        padding: 22px;
+    }
+
+    .delete-delivery-actions {
+        flex-direction: column;
+    }
+
+    .delete-delivery-actions button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,318 @@
+.book-shipment-page {
+    min-height: 100vh;
+    padding: 32px;
+    background: #f8fafc;
+    box-sizing: border-box;
+}
+
+/* Header */
+
+.book-shipment-header {
+    max-width: 1000px;
+    margin: 0 auto 28px;
+    padding: 28px 32px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.18);
+    box-sizing: border-box;
+}
+
+.book-shipment-label {
+    display: inline-block;
+    margin-bottom: 7px;
+
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+
+    opacity: 0.85;
+}
+
+.book-shipment-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.book-shipment-header p {
+    max-width: 650px;
+    margin: 9px 0 0;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    opacity: 0.9;
+}
+
+.book-shipment-icon {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.16);
+
+    font-size: 36px;
+}
+
+/* Main Card */
+
+.book-shipment-card {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    padding: 30px;
+
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+
+    box-sizing: border-box;
+}
+
+.book-shipment-card-header {
+    margin-bottom: 28px;
+}
+
+.book-shipment-card-header h2 {
+    margin: 0;
+
+    color: #0f172a;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.book-shipment-card-header p {
+    margin: 7px 0 0;
+
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Form Sections */
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 10px;
+}
+
+.form-section h3 {
+    margin: 0 0 18px;
+
+    color: #334155;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Form Grid */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+/* Labels */
+
+.form-group label {
+    margin-bottom: 7px;
+
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Inputs */
+
+.form-group input {
+    width: 100%;
+    padding: 12px 13px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #0f172a;
+
+    font-size: 14px;
+
+    outline: none;
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #94a3b8;
+}
+
+.form-group input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Actions */
+
+.book-shipment-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 10px;
+}
+
+/* Buttons */
+
+.cancel-button,
+.book-button {
+    min-width: 130px;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.cancel-button {
+    border: 1px solid #cbd5e1;
+    background: white;
+    color: #475569;
+}
+
+.cancel-button:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+.book-button {
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: white;
+
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+}
+
+.book-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.24);
+}
+
+/* Tablet */
+
+@media (max-width: 700px) {
+
+    .book-shipment-page {
+        padding: 22px 16px;
+    }
+
+    .book-shipment-header {
+        padding: 25px;
+    }
+
+    .book-shipment-card {
+        padding: 24px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group-full {
+        grid-column: auto;
+    }
+
+}
+
+/* Mobile */
+
+@media (max-width: 500px) {
+
+    .book-shipment-page {
+        padding: 15px;
+    }
+
+    .book-shipment-header {
+        padding: 22px;
+        align-items: flex-start;
+    }
+
+    .book-shipment-header h1 {
+        font-size: 24px;
+    }
+
+    .book-shipment-header p {
+        font-size: 13px;
+    }
+
+    .book-shipment-icon {
+        display: none;
+    }
+
+    .book-shipment-card {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .book-shipment-card-header h2 {
+        font-size: 19px;
+    }
+
+    .book-shipment-actions {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+
+    .cancel-button,
+    .book-button {
+        width: 100%;
+    }
+
+}

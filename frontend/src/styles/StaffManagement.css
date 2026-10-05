@@ -1,0 +1,484 @@
+.staff-management {
+    min-height: 100vh;
+    padding: 40px;
+    background: #f5f7fb;
+}
+
+.staff-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.staff-header h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #1f2937;
+}
+
+.staff-header p {
+    margin-top: 8px;
+    color: #6b7280;
+}
+
+.back-dashboard-button {
+    margin-bottom: 25px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #e5e7eb;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.back-dashboard-button:hover {
+    background: #d1d5db;
+}
+
+.staff-list-container {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.staff-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.staff-list-header h2 {
+    margin: 0;
+    color: #1f2937;
+}
+
+.staff-list-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.add-staff-button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.add-staff-button:hover {
+    background: #1d4ed8;
+}
+
+.staff-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.staff-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.staff-table th {
+    padding: 14px;
+    text-align: left;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.staff-table td {
+    padding: 16px 14px;
+    border-top: 1px solid #e5e7eb;
+    color: #374151;
+    font-size: 14px;
+}
+
+.staff-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.staff-role {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.staff-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-staff-button,
+.delete-staff-button {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.edit-staff-button {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.edit-staff-button:hover {
+    background: #dbeafe;
+}
+
+.delete-staff-button {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.delete-staff-button:hover {
+    background: #fecaca;
+}
+
+.staff-loading {
+    padding: 40px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.staff-empty {
+    padding: 40px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.staff-error {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.staff-success {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.add-staff-form {
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+}
+
+.add-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.add-form-header h2 {
+    margin: 0;
+    color: #1f2937;
+}
+
+.add-form-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.close-form-button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 7px;
+    background: #e5e7eb;
+    color: #374151;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.close-form-button:hover {
+    background: #d1d5db;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 7px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    padding: 11px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2563eb;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.cancel-staff-button,
+.save-staff-button {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-staff-button {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.cancel-staff-button:hover {
+    background: #d1d5db;
+}
+
+.save-staff-button {
+    background: #2563eb;
+    color: white;
+}
+
+.save-staff-button:hover {
+    background: #1d4ed8;
+}
+
+.save-staff-button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+
+@media (max-width: 700px) {
+
+    .staff-management {
+        padding: 20px;
+    }
+
+    .staff-header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .staff-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .cancel-staff-button,
+    .save-staff-button {
+        width: 100%;
+    }
+}
+
+/* ================================
+   Delete Confirmation Modal
+================================ */
+
+.delete-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(17, 24, 39, 0.55);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1000;
+    padding: 20px;
+}
+
+.delete-modal {
+    width: 100%;
+    max-width: 420px;
+
+    background: white;
+    border-radius: 16px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+
+    animation: deleteModalAppear 0.2s ease;
+}
+
+@keyframes deleteModalAppear {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.delete-modal-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fee2e2;
+    color: #dc2626;
+
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.delete-modal h2 {
+    margin: 0 0 10px;
+
+    color: #1f2937;
+    font-size: 22px;
+}
+
+.delete-modal p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.delete-modal p strong {
+    color: #1f2937;
+}
+
+.delete-warning {
+    margin-top: 8px !important;
+
+    color: #dc2626 !important;
+    font-size: 13px !important;
+}
+
+.delete-modal-actions {
+    display: flex;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 25px;
+}
+
+.delete-cancel-button,
+.delete-confirm-button {
+    padding: 11px 20px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.delete-cancel-button {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.delete-cancel-button:hover {
+    background: #d1d5db;
+}
+
+.delete-confirm-button {
+    background: #dc2626;
+    color: white;
+}
+
+.delete-confirm-button:hover {
+    background: #b91c1c;
+}
+
+.delete-cancel-button:disabled,
+.delete-confirm-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Mobile */
+
+@media (max-width: 500px) {
+
+    .delete-modal {
+        padding: 25px 20px;
+    }
+
+    .delete-modal-actions {
+        flex-direction: column;
+    }
+
+    .delete-cancel-button,
+    .delete-confirm-button {
+        width: 100%;
+    }
+}

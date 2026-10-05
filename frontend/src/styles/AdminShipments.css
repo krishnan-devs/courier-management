@@ -1,0 +1,951 @@
+.admin-shipments {
+    min-height: 100vh;
+    padding: 30px;
+    background: #f5f7fb;
+}
+
+/* Header */
+
+.shipments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.shipments-header h1 {
+    margin: 0;
+    font-size: 30px;
+    color: #1f2937;
+}
+
+.shipments-header p {
+    margin-top: 8px;
+    color: #6b7280;
+}
+
+/* Back button */
+
+.back-dashboard-button {
+    border: none;
+    background: white;
+    color: #374151;
+    padding: 11px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.back-dashboard-button:hover {
+    background: #f3f4f6;
+}
+
+/* Main container */
+
+.shipment-list-container {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* List header */
+
+.shipment-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.shipment-list-header h2 {
+    margin: 0;
+    color: #1f2937;
+}
+
+.shipment-list-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+}
+
+.refresh-shipments-button {
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.refresh-shipments-button:hover {
+    background: #1d4ed8;
+}
+
+/* Table */
+
+.shipment-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.shipment-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+}
+
+.shipment-table th {
+    text-align: left;
+    padding: 14px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.shipment-table td {
+    padding: 15px 14px;
+    border-bottom: 1px solid #eef2f7;
+    color: #374151;
+    font-size: 14px;
+}
+
+.shipment-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.shipment-table td strong {
+    color: #2563eb;
+}
+
+/* ================================================= */
+/* Shipment Action Buttons */
+/* ================================================= */
+
+.shipment-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* View Button */
+
+.view-shipment-button {
+    border: none;
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 8px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.view-shipment-button:hover {
+    background: #2563eb;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.view-shipment-button:active {
+    transform: translateY(0);
+}
+
+/* Edit Button */
+
+.edit-shipment-button {
+    border: none;
+    background: #f0fdf4;
+    color: #15803d;
+    padding: 8px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.edit-shipment-button:hover {
+    background: #16a34a;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.edit-shipment-button:active {
+    transform: translateY(0);
+}
+
+/* Delete Button */
+
+.delete-shipment-button {
+    border: none;
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 8px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.delete-shipment-button:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.delete-shipment-button:active {
+    transform: translateY(0);
+}
+
+.delete-shipment-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+}
+
+/* Status */
+
+.shipment-status {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* Common statuses */
+
+.shipment-status.booked {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.shipment-status.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.shipment-status.in-transit {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.shipment-status.delivered {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.shipment-status.cancelled {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Loading */
+
+.shipment-loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+}
+
+/* Empty */
+
+.shipment-empty {
+    text-align: center;
+    padding: 70px 20px;
+}
+
+.shipment-empty-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.shipment-empty h3 {
+    margin: 0 0 8px;
+    color: #374151;
+}
+
+.shipment-empty p {
+    margin: 0;
+    color: #6b7280;
+}
+
+/* Error */
+
+.shipment-error {
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 9px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+/* Success */
+
+.shipment-success {
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 9px;
+    background: #dcfce7;
+    color: #166534;
+    font-weight: 600;
+    border: 1px solid #bbf7d0;
+}
+
+/* ================================================= */
+/* Shipment Details Modal */
+/* ================================================= */
+
+.shipment-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.shipment-modal {
+    width: 100%;
+    max-width: 850px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    animation: shipmentModalAppear 0.2s ease-out;
+}
+
+@keyframes shipmentModalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Modal Header */
+
+.shipment-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 24px 26px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.shipment-modal-header h2 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 23px;
+}
+
+.shipment-modal-header p {
+    margin: 6px 0 0;
+    color: #2563eb;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.close-shipment-modal {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 9px;
+    background: #f3f4f6;
+    color: #4b5563;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.close-shipment-modal:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.close-shipment-modal:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Details Grid */
+
+.shipment-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    padding: 24px 26px;
+}
+
+/* Detail Cards */
+
+.shipment-detail-card {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.shipment-detail-card:first-child {
+    grid-column: span 2;
+}
+
+.shipment-detail-card h3 {
+    margin: 0 0 18px;
+    color: #1f2937;
+    font-size: 16px;
+}
+
+/* Detail Rows */
+
+.shipment-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 11px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.shipment-detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.shipment-detail-row span:first-child {
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.shipment-detail-row strong {
+    color: #1f2937;
+    font-size: 14px;
+    text-align: right;
+    max-width: 65%;
+    word-break: break-word;
+}
+
+/* ================================================= */
+/* Edit Shipment Form */
+/* ================================================= */
+
+.edit-shipment-modal {
+    max-width: 900px;
+}
+
+.shipment-edit-form {
+    width: 100%;
+}
+
+.shipment-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    padding: 25px 26px;
+}
+
+.shipment-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.shipment-form-group.full-width {
+    grid-column: span 2;
+}
+
+.shipment-form-group label {
+    color: #374151;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.shipment-form-group input,
+.shipment-form-group select,
+.shipment-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    background: white;
+    color: #1f2937;
+    padding: 11px 13px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.shipment-form-group input:focus,
+.shipment-form-group select:focus,
+.shipment-form-group textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.shipment-form-group input::placeholder,
+.shipment-form-group textarea::placeholder {
+    color: #9ca3af;
+}
+
+.shipment-form-group textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.shipment-form-group select {
+    cursor: pointer;
+}
+
+/* Edit Modal Footer */
+
+.shipment-edit-form .shipment-modal-footer {
+    gap: 10px;
+}
+
+/* Cancel Button */
+
+.cancel-edit-button {
+    border: 1px solid #d1d5db;
+    background: white;
+    color: #374151;
+    padding: 10px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.cancel-edit-button:hover {
+    background: #f3f4f6;
+}
+
+.cancel-edit-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Save Button */
+
+.save-shipment-button {
+    border: none;
+    background: #16a34a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.save-shipment-button:hover {
+    background: #15803d;
+    transform: translateY(-1px);
+}
+
+.save-shipment-button:active {
+    transform: translateY(0);
+}
+
+.save-shipment-button:disabled {
+    background: #86efac;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Modal Footer */
+
+.shipment-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 18px 26px 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.close-details-button {
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    transition: background 0.2s ease;
+}
+
+.close-details-button:hover {
+    background: #1d4ed8;
+}
+
+/* ================================================= */
+/* Delete Confirmation Modal */
+/* ================================================= */
+
+.delete-confirmation-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1200;
+    backdrop-filter: blur(5px);
+}
+
+.delete-confirmation-modal {
+    width: 100%;
+    max-width: 460px;
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    animation: deleteModalAppear 0.2s ease-out;
+}
+
+@keyframes deleteModalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.delete-confirmation-icon {
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fee2e2;
+    color: #dc2626;
+    font-size: 28px;
+}
+
+.delete-confirmation-modal h2 {
+    margin: 0 0 10px;
+    color: #1f2937;
+    font-size: 22px;
+}
+
+.delete-confirmation-modal > p {
+    margin: 0 auto 20px;
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.delete-shipment-info {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.delete-shipment-info strong {
+    display: block;
+    color: #2563eb;
+    font-size: 15px;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+.delete-shipment-info span {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.delete-warning {
+    margin: 0 0 24px;
+    padding: 11px 13px;
+    border-radius: 9px;
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.delete-confirmation-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cancel-delete-button,
+.confirm-delete-button {
+    border: none;
+    padding: 11px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.cancel-delete-button {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.cancel-delete-button:hover {
+    background: #e5e7eb;
+}
+
+.confirm-delete-button {
+    background: #dc2626;
+    color: white;
+}
+
+.confirm-delete-button:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+.confirm-delete-button:active {
+    transform: translateY(0);
+}
+
+.cancel-delete-button:disabled,
+.confirm-delete-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+}
+
+/* Modal scrollbar */
+
+.shipment-modal::-webkit-scrollbar {
+    width: 7px;
+}
+
+.shipment-modal::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+.shipment-modal::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.shipment-modal::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ================================================= */
+/* Responsive */
+/* ================================================= */
+
+@media (max-width: 768px) {
+
+    .admin-shipments {
+        padding: 20px;
+    }
+
+    .shipments-header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .shipments-header h1 {
+        font-size: 24px;
+    }
+
+    .shipment-list-container {
+        padding: 18px;
+    }
+
+    .shipment-list-header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .shipment-action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .view-shipment-button,
+    .edit-shipment-button,
+    .delete-shipment-button {
+        width: 100%;
+    }
+
+    .shipment-modal-overlay {
+        padding: 15px;
+    }
+
+    .shipment-modal {
+        max-height: 92vh;
+        border-radius: 14px;
+    }
+
+    .shipment-modal-header {
+        padding: 20px;
+    }
+
+    .shipment-details-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .shipment-detail-card:first-child {
+        grid-column: span 1;
+    }
+
+    .shipment-edit-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .shipment-form-group.full-width {
+        grid-column: span 1;
+    }
+
+    .shipment-modal-footer {
+        padding: 16px 20px 20px;
+    }
+
+    .delete-confirmation-modal {
+        max-width: 420px;
+        padding: 25px;
+    }
+}
+
+/* Small mobile screens */
+
+@media (max-width: 480px) {
+
+    .admin-shipments {
+        padding: 15px;
+    }
+
+    .shipments-header {
+        flex-direction: column;
+    }
+
+    .shipments-header h1 {
+        font-size: 22px;
+    }
+
+    .shipment-list-header {
+        flex-direction: column;
+    }
+
+    .refresh-shipments-button {
+        width: 100%;
+    }
+
+    .shipment-action-buttons {
+        width: 100%;
+    }
+
+    .shipment-modal-header {
+        padding: 18px;
+    }
+
+    .shipment-modal-header h2 {
+        font-size: 20px;
+    }
+
+    .shipment-details-grid {
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .shipment-detail-card {
+        padding: 16px;
+    }
+
+    .shipment-detail-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .shipment-detail-row strong {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .shipment-edit-grid {
+        padding: 15px;
+        gap: 14px;
+    }
+
+    .shipment-form-group input,
+    .shipment-form-group select,
+    .shipment-form-group textarea {
+        font-size: 13px;
+    }
+
+    .shipment-modal-footer {
+        padding: 15px 18px 18px;
+        flex-direction: column;
+    }
+
+    .cancel-edit-button,
+    .save-shipment-button,
+    .close-details-button {
+        width: 100%;
+    }
+
+    .delete-confirmation-modal {
+        padding: 22px 18px;
+        border-radius: 15px;
+    }
+
+    .delete-confirmation-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 24px;
+    }
+
+    .delete-confirmation-modal h2 {
+        font-size: 20px;
+    }
+
+    .delete-confirmation-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-delete-button,
+    .confirm-delete-button {
+        width: 100%;
+    }
+}
