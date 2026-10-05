@@ -251,6 +251,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://localhost:5173"
+                "https://courier-management-bum9.onrender.com"
         ));
 
         configuration.setAllowedMethods(List.of(
