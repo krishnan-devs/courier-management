@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
 import "../styles/AdminNotifications.css";
+import api from "../services/api";
 
 function AdminNotifications() {
 
@@ -27,24 +28,11 @@ function AdminNotifications() {
             setError("");
             setSuccessMessage("");
 
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(
-                `http://localhost:8080/api/notifications/user/${userId}`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
+            const response = await api.get(
+                `/api/notifications/user/${userId}`
             );
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch notifications");
-            }
-
-            const data = await response.json();
+            const data = response.data;
 
             setNotifications(data);
 
@@ -53,6 +41,7 @@ function AdminNotifications() {
             console.error("Notification fetch error:", error);
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to load notifications."
             );
@@ -72,24 +61,11 @@ function AdminNotifications() {
             setError("");
             setSuccessMessage("");
 
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(
-                `http://localhost:8080/api/notifications/${notificationId}/read`,
-                {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
+            const response = await api.put(
+                `/api/notifications/${notificationId}/read`
             );
 
-            if (!response.ok) {
-                throw new Error("Failed to mark notification as read");
-            }
-
-            const updatedNotification = await response.json();
+            const updatedNotification = response.data;
 
             setNotifications((currentNotifications) =>
                 currentNotifications.map((notification) =>
@@ -113,6 +89,7 @@ function AdminNotifications() {
             console.error("Mark notification error:", error);
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to mark notification as read."
             );
@@ -164,6 +141,7 @@ function AdminNotifications() {
                 </div>
 
                 <div className="notification-header-actions">
+
                     <button
                         className="notification-back-btn"
                         onClick={() => navigate("/admin")}
@@ -172,6 +150,7 @@ function AdminNotifications() {
                     </button>
 
                     <LogoutButton />
+
                 </div>
 
             </div>
@@ -200,7 +179,9 @@ function AdminNotifications() {
                         onClick={fetchNotifications}
                         disabled={loading}
                     >
-                        {loading ? "Loading..." : "Load Notifications"}
+                        {loading
+                            ? "Loading..."
+                            : "Load Notifications"}
                     </button>
 
                 </div>
@@ -209,12 +190,16 @@ function AdminNotifications() {
 
                     <div className="summary-card">
                         <span>Total</span>
-                        <strong>{notifications.length}</strong>
+                        <strong>
+                            {notifications.length}
+                        </strong>
                     </div>
 
                     <div className="summary-card unread-summary">
                         <span>Unread</span>
-                        <strong>{unreadCount}</strong>
+                        <strong>
+                            {unreadCount}
+                        </strong>
                     </div>
 
                 </div>
@@ -236,24 +221,36 @@ function AdminNotifications() {
             {loading ? (
 
                 <div className="notification-empty-state">
+
                     <div className="notification-loader"></div>
-                    <h3>Loading notifications...</h3>
-                    <p>Please wait.</p>
+
+                    <h3>
+                        Loading notifications...
+                    </h3>
+
+                    <p>
+                        Please wait.
+                    </p>
+
                 </div>
 
             ) : notifications.length === 0 ? (
 
                 <div className="notification-empty-state">
+
                     <div className="empty-notification-icon">
                         🔔
                     </div>
 
-                    <h3>No Notifications</h3>
+                    <h3>
+                        No Notifications
+                    </h3>
 
                     <p>
                         There are no notifications available
                         for User ID {userId}.
                     </p>
+
                 </div>
 
             ) : (
@@ -272,7 +269,9 @@ function AdminNotifications() {
                         >
 
                             <div className="notification-icon">
-                                {notification.read ? "📬" : "🔔"}
+                                {notification.read
+                                    ? "📬"
+                                    : "🔔"}
                             </div>
 
                             <div className="notification-content">
@@ -304,7 +303,8 @@ function AdminNotifications() {
                                 <div className="notification-meta">
 
                                     <span>
-                                        User ID: {notification.userId}
+                                        User ID:{" "}
+                                        {notification.userId}
                                     </span>
 
                                     <span>
@@ -331,6 +331,7 @@ function AdminNotifications() {
                                 </button>
 
                                 {!notification.read && (
+
                                     <button
                                         className="mark-read-btn"
                                         onClick={() =>
@@ -344,6 +345,7 @@ function AdminNotifications() {
                                             ? "Updating..."
                                             : "Mark Read"}
                                     </button>
+
                                 )}
 
                             </div>
@@ -374,6 +376,7 @@ function AdminNotifications() {
                         <div className="notification-modal-header">
 
                             <div>
+
                                 <span className="modal-label">
                                     Notification Details
                                 </span>
@@ -381,6 +384,7 @@ function AdminNotifications() {
                                 <h2>
                                     {selectedNotification.title}
                                 </h2>
+
                             </div>
 
                             <button
@@ -397,21 +401,35 @@ function AdminNotifications() {
                         <div className="notification-detail-body">
 
                             <div className="notification-detail-row">
-                                <span>Notification ID</span>
+
+                                <span>
+                                    Notification ID
+                                </span>
+
                                 <strong>
                                     #{selectedNotification.id}
                                 </strong>
+
                             </div>
 
                             <div className="notification-detail-row">
-                                <span>User ID</span>
+
+                                <span>
+                                    User ID
+                                </span>
+
                                 <strong>
                                     {selectedNotification.userId}
                                 </strong>
+
                             </div>
 
                             <div className="notification-detail-row">
-                                <span>Status</span>
+
+                                <span>
+                                    Status
+                                </span>
+
                                 <strong
                                     className={
                                         selectedNotification.read
@@ -423,23 +441,33 @@ function AdminNotifications() {
                                         ? "READ"
                                         : "UNREAD"}
                                 </strong>
+
                             </div>
 
                             <div className="notification-detail-row">
-                                <span>Created At</span>
+
+                                <span>
+                                    Created At
+                                </span>
+
                                 <strong>
                                     {formatDate(
                                         selectedNotification.createdAt
                                     )}
                                 </strong>
+
                             </div>
 
                             <div className="notification-detail-message">
-                                <span>Message</span>
+
+                                <span>
+                                    Message
+                                </span>
 
                                 <p>
                                     {selectedNotification.message}
                                 </p>
+
                             </div>
 
                         </div>
@@ -447,6 +475,7 @@ function AdminNotifications() {
                         <div className="notification-modal-footer">
 
                             {!selectedNotification.read && (
+
                                 <button
                                     className="mark-read-btn"
                                     onClick={() =>
@@ -460,6 +489,7 @@ function AdminNotifications() {
                                         ? "Updating..."
                                         : "Mark as Read"}
                                 </button>
+
                             )}
 
                             <button

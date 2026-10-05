@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
 import "../styles/AdminDeliveries.css";
+import api from "../services/api";
 
 function AdminDeliveries() {
 
@@ -29,8 +30,6 @@ function AdminDeliveries() {
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
-    const token = localStorage.getItem("token");
-
     // ==============================
     // LOAD DELIVERIES
     // ==============================
@@ -42,22 +41,9 @@ function AdminDeliveries() {
             setLoading(true);
             setError("");
 
-            const response = await fetch(
-                "http://localhost:8080/api/deliveries",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
+            const response = await api.get("/api/deliveries");
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch deliveries");
-            }
-
-            const result = await response.json();
+            const result = response.data;
 
             setDeliveries(result || []);
 
@@ -66,6 +52,7 @@ function AdminDeliveries() {
             console.error("Load deliveries error:", error);
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to load delivery assignments"
             );
@@ -85,22 +72,9 @@ function AdminDeliveries() {
 
         try {
 
-            const response = await fetch(
-                "http://localhost:8080/api/shipments",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
+            const response = await api.get("/api/shipments");
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch shipments");
-            }
-
-            const result = await response.json();
+            const result = response.data;
 
             setShipments(
                 Array.isArray(result)
@@ -113,6 +87,7 @@ function AdminDeliveries() {
             console.error("Load shipments error:", error);
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to load shipments"
             );
@@ -127,22 +102,9 @@ function AdminDeliveries() {
 
         try {
 
-            const response = await fetch(
-                "http://localhost:8080/api/staff",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
+            const response = await api.get("/api/staff");
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch staff");
-            }
-
-            const result = await response.json();
+            const result = response.data;
 
             setStaff(result || []);
 
@@ -151,6 +113,7 @@ function AdminDeliveries() {
             console.error("Load staff error:", error);
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to load staff"
             );
@@ -283,40 +246,23 @@ function AdminDeliveries() {
             // Existing delivery -> Update/Reassign
             if (selectedDelivery) {
 
-                response = await fetch(
-                    `http://localhost:8080/api/deliveries/${selectedDelivery.id}`,
-                    {
-                        method: "PUT",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(deliveryData)
-                    }
+                response = await api.put(
+                    `/api/deliveries/${selectedDelivery.id}`,
+                    deliveryData
                 );
 
             } else {
 
                 // New assignment
-                response = await fetch(
-                    "http://localhost:8080/api/deliveries",
-                    {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(deliveryData)
-                    }
+                response = await api.post(
+                    "/api/deliveries",
+                    deliveryData
                 );
             }
 
-            const responseText = await response.text();
-
-            if (!response.ok) {
+            if (response.status < 200 || response.status >= 300) {
 
                 throw new Error(
-                    responseText ||
                     "Failed to assign delivery"
                 );
             }
@@ -339,6 +285,7 @@ function AdminDeliveries() {
             console.error("Assign delivery error:", error);
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to assign delivery"
             );
@@ -385,26 +332,16 @@ function AdminDeliveries() {
             setError("");
             setSuccessMessage("");
 
-            const response = await fetch(
-                `http://localhost:8080/api/deliveries/${selectedDelivery.id}/status`,
+            const response = await api.put(
+                `/api/deliveries/${selectedDelivery.id}/status`,
                 {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        status: selectedStatus
-                    })
+                    status: selectedStatus
                 }
             );
 
-            const responseText = await response.text();
-
-            if (!response.ok) {
+            if (response.status < 200 || response.status >= 300) {
 
                 throw new Error(
-                    responseText ||
                     "Failed to update delivery status"
                 );
             }
@@ -426,6 +363,7 @@ function AdminDeliveries() {
             );
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to update delivery status"
             );
@@ -466,23 +404,13 @@ function AdminDeliveries() {
             setError("");
             setSuccessMessage("");
 
-            const response = await fetch(
-                `http://localhost:8080/api/deliveries/${selectedDelivery.id}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
+            const response = await api.delete(
+                `/api/deliveries/${selectedDelivery.id}`
             );
 
-            const responseText = await response.text();
-
-            if (!response.ok) {
+            if (response.status < 200 || response.status >= 300) {
 
                 throw new Error(
-                    responseText ||
                     "Failed to delete delivery"
                 );
             }
@@ -505,6 +433,7 @@ function AdminDeliveries() {
             );
 
             setError(
+                error.response?.data ||
                 error.message ||
                 "Unable to delete delivery"
             );
@@ -703,33 +632,13 @@ function AdminDeliveries() {
 
                                 <tr>
 
-                                    <th>
-                                        ID
-                                    </th>
-
-                                    <th>
-                                        Shipment
-                                    </th>
-
-                                    <th>
-                                        Staff
-                                    </th>
-
-                                    <th>
-                                        Status
-                                    </th>
-
-                                    <th>
-                                        Assigned At
-                                    </th>
-
-                                    <th>
-                                        Delivered At
-                                    </th>
-
-                                    <th>
-                                        Actions
-                                    </th>
+                                    <th>ID</th>
+                                    <th>Shipment</th>
+                                    <th>Staff</th>
+                                    <th>Status</th>
+                                    <th>Assigned At</th>
+                                    <th>Delivered At</th>
+                                    <th>Actions</th>
 
                                 </tr>
 
@@ -997,9 +906,7 @@ function AdminDeliveries() {
                                     </h3>
 
                                     <p>
-                                        <span>
-                                            ID
-                                        </span>
+                                        <span>ID</span>
 
                                         <strong>
                                             #
@@ -1010,9 +917,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Status
-                                        </span>
+                                        <span>Status</span>
 
                                         <span
                                             className={`delivery-status ${getStatusClass(
@@ -1027,9 +932,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Assigned At
-                                        </span>
+                                        <span>Assigned At</span>
 
                                         <strong>
                                             {
@@ -1043,9 +946,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Delivered At
-                                        </span>
+                                        <span>Delivered At</span>
 
                                         <strong>
                                             {
@@ -1081,9 +982,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Sender
-                                        </span>
+                                        <span>Sender</span>
 
                                         <strong>
                                             {
@@ -1095,9 +994,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Receiver
-                                        </span>
+                                        <span>Receiver</span>
 
                                         <strong>
                                             {
@@ -1131,9 +1028,7 @@ function AdminDeliveries() {
                                     </h3>
 
                                     <p>
-                                        <span>
-                                            Name
-                                        </span>
+                                        <span>Name</span>
 
                                         <strong>
                                             {
@@ -1145,9 +1040,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Email
-                                        </span>
+                                        <span>Email</span>
 
                                         <strong>
                                             {
@@ -1159,9 +1052,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Phone
-                                        </span>
+                                        <span>Phone</span>
 
                                         <strong>
                                             {
@@ -1173,9 +1064,7 @@ function AdminDeliveries() {
                                     </p>
 
                                     <p>
-                                        <span>
-                                            Location
-                                        </span>
+                                        <span>Location</span>
 
                                         <strong>
                                             {

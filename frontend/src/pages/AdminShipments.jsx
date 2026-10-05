@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
+import api from "../services/api";
 import "../styles/AdminShipments.css";
 
 function AdminShipments() {
@@ -30,33 +31,18 @@ function AdminShipments() {
             setLoading(true);
             setError("");
 
-            const token = localStorage.getItem("token");
+            const response = await api.get("/api/shipments");
 
-            const response = await fetch(
-                "http://localhost:8080/api/shipments",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("Failed to load shipments");
-            }
-
-            const result = await response.json();
-
-            setShipments(result.data || []);
+            setShipments(response.data?.data || []);
 
         } catch (error) {
 
             console.error("Load shipments error:", error);
 
             setError(
-                error.message || "Unable to load shipments"
+                error.response?.data?.message ||
+                error.message ||
+                "Unable to load shipments"
             );
 
         } finally {
@@ -71,29 +57,12 @@ function AdminShipments() {
             setDetailsLoading(true);
             setError("");
 
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(
-                `http://localhost:8080/api/shipments/${id}`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
+            const response = await api.get(
+                `/api/shipments/${id}`
             );
 
-            if (!response.ok) {
-                throw new Error(
-                    "Failed to load shipment details"
-                );
-            }
-
-            const result = await response.json();
-
             // Backend returns ApiResponse<Shipment>
-            setSelectedShipment(result.data);
+            setSelectedShipment(response.data?.data);
 
         } catch (error) {
 
@@ -103,6 +72,7 @@ function AdminShipments() {
             );
 
             setError(
+                error.response?.data?.message ||
                 error.message ||
                 "Unable to load shipment details"
             );
@@ -159,59 +129,40 @@ function AdminShipments() {
             setError("");
             setSuccessMessage("");
 
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(
-                `http://localhost:8080/api/shipments/${editingShipment.id}`,
+            await api.put(
+                `/api/shipments/${editingShipment.id}`,
                 {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        trackingNumber:
-                            editingShipment.trackingNumber,
+                    trackingNumber:
+                        editingShipment.trackingNumber,
 
-                        senderName:
-                            editingShipment.senderName,
+                    senderName:
+                        editingShipment.senderName,
 
-                        senderPhone:
-                            editingShipment.senderPhone,
+                    senderPhone:
+                        editingShipment.senderPhone,
 
-                        receiverName:
-                            editingShipment.receiverName,
+                    receiverName:
+                        editingShipment.receiverName,
 
-                        receiverPhone:
-                            editingShipment.receiverPhone,
+                    receiverPhone:
+                        editingShipment.receiverPhone,
 
-                        pickupAddress:
-                            editingShipment.pickupAddress,
+                    pickupAddress:
+                        editingShipment.pickupAddress,
 
-                        deliveryAddress:
-                            editingShipment.deliveryAddress,
+                    deliveryAddress:
+                        editingShipment.deliveryAddress,
 
-                        packageDescription:
-                            editingShipment.packageDescription,
+                    packageDescription:
+                        editingShipment.packageDescription,
 
-                        weight:
-                            Number(editingShipment.weight),
+                    weight:
+                        Number(editingShipment.weight),
 
-                        status:
-                            editingShipment.status
-                    })
+                    status:
+                        editingShipment.status
                 }
             );
-
-            const responseText = await response.text();
-
-            if (!response.ok) {
-
-                throw new Error(
-                    responseText ||
-                    "Failed to update shipment"
-                );
-            }
 
             setEditingShipment(null);
 
@@ -229,6 +180,8 @@ function AdminShipments() {
             );
 
             setError(
+                error.response?.data?.message ||
+                error.response?.data ||
                 error.message ||
                 "Unable to update shipment"
             );
@@ -261,28 +214,9 @@ function AdminShipments() {
             setError("");
             setSuccessMessage("");
 
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(
-                `http://localhost:8080/api/shipments/${shipmentToDelete.id}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
+            await api.delete(
+                `/api/shipments/${shipmentToDelete.id}`
             );
-
-            const responseText = await response.text();
-
-            if (!response.ok) {
-
-                throw new Error(
-                    responseText ||
-                    "Failed to delete shipment"
-                );
-            }
 
             setShipmentToDelete(null);
 
@@ -300,6 +234,8 @@ function AdminShipments() {
             );
 
             setError(
+                error.response?.data?.message ||
+                error.response?.data ||
                 error.message ||
                 "Unable to delete shipment"
             );

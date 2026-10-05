@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import LogoutButton from "../components/LogoutButton";
 import "../styles/AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 function AdminDashboard() {
 
@@ -15,9 +16,6 @@ function AdminDashboard() {
         cancelled: 0
     });
 
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-
     useEffect(() => {
         fetchDashboard();
     }, []);
@@ -26,75 +24,41 @@ function AdminDashboard() {
 
         try {
 
-            const token = localStorage.getItem("token");
+            const response = await api.get("/api/admin/dashboard");
 
-            const response = await fetch(
-                "http://localhost:8080/api/admin/dashboard",
-                {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
+            const data = response.data;
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch dashboard");
-            }
-
-            const data = await response.json();
+            console.log("Admin Dashboard Data:", data);
 
             setDashboard(data);
 
         } catch (error) {
 
             console.error("Dashboard error:", error);
-            setError("Unable to load dashboard");
 
-        } finally {
+            if (error.response?.status === 401 ||
+                error.response?.status === 403) {
 
-            setLoading(false);
+                alert("You are not authorized to access Admin Dashboard.");
 
+                navigate("/login");
+            }
         }
     };
 
-    if (loading) {
-        return (
-            <div className="admin-dashboard">
-                <h2>Loading Admin Dashboard...</h2>
-            </div>
-        );
-    }
-
     return (
         <div className="admin-dashboard">
-
-            {/* Header */}
 
             <div className="admin-header">
 
                 <div>
                     <h1>Admin Dashboard</h1>
-
-                    <p>
-                        Manage and monitor courier operations
-                    </p>
+                    <p>Courier Management System</p>
                 </div>
 
                 <LogoutButton />
 
             </div>
-
-            {/* Error */}
-
-            {error && (
-                <div className="dashboard-error">
-                    {error}
-                </div>
-            )}
-
-            {/* Dashboard Statistics */}
 
             <div className="dashboard-cards">
 
@@ -110,140 +74,34 @@ function AdminDashboard() {
 
                 <div className="dashboard-card">
                     <h3>In Transit</h3>
-                    <p>{dashboard.inTransitShipments}</p>
+                    <p>{dashboard.inTransit}</p>
                 </div>
 
                 <div className="dashboard-card">
                     <h3>Delivered</h3>
-                    <p>{dashboard.deliveredShipments}</p>
+                    <p>{dashboard.delivered}</p>
                 </div>
 
                 <div className="dashboard-card">
                     <h3>Cancelled</h3>
-                    <p>{dashboard.cancelledShipments}</p>
+                    <p>{dashboard.cancelled}</p>
                 </div>
 
             </div>
 
-            {/* Admin Actions */}
-
             <div className="admin-actions">
 
-                {/* Staff Management */}
+                <button onClick={() => navigate("/admin/deliveries")}>
+                    Manage Deliveries
+                </button>
 
-                <div
-                    className="admin-action-card"
-                    onClick={() => navigate("/admin/staff")}
-                >
+                <button onClick={() => navigate("/admin/staff")}>
+                    Manage Staff
+                </button>
 
-                    <div className="admin-action-icon">
-                        👥
-                    </div>
-
-                    <div className="admin-action-content">
-
-                        <h3>
-                            Staff Management
-                        </h3>
-
-                        <p>
-                            Create and manage courier staff members.
-                        </p>
-
-                        <span>
-                            Manage Staff →
-                        </span>
-
-                    </div>
-
-                </div>
-
-                {/* Shipment Management */}
-
-                <div
-                    className="admin-action-card"
-                    onClick={() => navigate("/admin/shipments")}
-                >
-
-                    <div className="admin-action-icon">
-                        📦
-                    </div>
-
-                    <div className="admin-action-content">
-
-                        <h3>
-                            Shipment Management
-                        </h3>
-
-                        <p>
-                            View and manage all courier shipments.
-                        </p>
-
-                        <span>
-                            Manage Shipments →
-                        </span>
-
-                    </div>
-
-                </div>
-
-                {/* Delivery Management */}
-
-                <div
-                    className="admin-action-card"
-                    onClick={() => navigate("/admin/deliveries")}
-                >
-
-                    <div className="admin-action-icon">
-                        🚚
-                    </div>
-
-                    <div className="admin-action-content">
-
-                        <h3>
-                            Delivery Management
-                        </h3>
-
-                        <p>
-                            Manage shipment assignments and delivery status.
-                        </p>
-
-                        <span>
-                            Manage Deliveries →
-                        </span>
-
-                    </div>
-
-                </div>
-
-                {/* Notification Management */}
-
-                <div
-                    className="admin-action-card"
-                    onClick={() => navigate("/admin/notifications")}
-                >
-
-                    <div className="admin-action-icon">
-                        🔔
-                    </div>
-
-                    <div className="admin-action-content">
-
-                        <h3>
-                            Notifications
-                        </h3>
-
-                        <p>
-                            View and manage courier system notifications.
-                        </p>
-
-                        <span>
-                            View Notifications →
-                        </span>
-
-                    </div>
-
-                </div>
+                <button onClick={() => navigate("/admin/shipments")}>
+                    Manage Shipments
+                </button>
 
             </div>
 

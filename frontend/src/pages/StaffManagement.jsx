@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
+import api from "../services/api";
 import "../styles/StaffManagement.css";
 
 function StaffManagement() {
@@ -29,7 +30,6 @@ function StaffManagement() {
         role: "STAFF"
     });
 
-
     // Load all staff
     const loadStaff = async () => {
 
@@ -38,33 +38,18 @@ function StaffManagement() {
             setLoading(true);
             setError("");
 
-            const token = localStorage.getItem("token");
+            const response = await api.get("/api/staff");
 
-            const response = await fetch(
-                "http://localhost:8080/api/staff",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("Failed to load staff members");
-            }
-
-            const data = await response.json();
-
-            setStaffList(data);
+            setStaffList(response.data);
 
         } catch (error) {
 
             console.error("Load staff error:", error);
 
             setError(
-                error.message || "Unable to load staff members"
+                error.response?.data?.message ||
+                error.message ||
+                "Unable to load staff members"
             );
 
         } finally {
@@ -73,11 +58,9 @@ function StaffManagement() {
         }
     };
 
-
     useEffect(() => {
         loadStaff();
     }, []);
-
 
     // Handle form changes
     const handleChange = (event) => {
@@ -87,7 +70,6 @@ function StaffManagement() {
             [event.target.name]: event.target.value
         });
     };
-
 
     // Create / Update staff
     const handleCreateStaff = async (event) => {
@@ -100,39 +82,20 @@ function StaffManagement() {
 
         try {
 
-            const token = localStorage.getItem("token");
+            if (editingStaff) {
 
-            const url = editingStaff
-                ? `http://localhost:8080/api/staff/${editingStaff.id}`
-                : "http://localhost:8080/api/staff";
+                await api.put(
+                    `/api/staff/${editingStaff.id}`,
+                    newStaff
+                );
 
-            const method = editingStaff ? "PUT" : "POST";
+            } else {
 
-            const response = await fetch(
-                url,
-                {
-                    method: method,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(newStaff)
-                }
-            );
-
-            if (!response.ok) {
-
-                const errorText = await response.text();
-
-                throw new Error(
-                    errorText ||
-                    (editingStaff
-                        ? "Failed to update staff"
-                        : "Failed to create staff")
+                await api.post(
+                    "/api/staff",
+                    newStaff
                 );
             }
-
-            await response.json();
 
             setSuccessMessage(
                 editingStaff
@@ -159,7 +122,10 @@ function StaffManagement() {
             console.error("Save staff error:", error);
 
             setError(
-                error.message || "Unable to save staff"
+                error.response?.data?.message ||
+                error.response?.data ||
+                error.message ||
+                "Unable to save staff"
             );
 
         } finally {
@@ -167,7 +133,6 @@ function StaffManagement() {
             setSaving(false);
         }
     };
-
 
     // Edit staff
     const handleEditStaff = (staff) => {
@@ -188,7 +153,6 @@ function StaffManagement() {
         setSuccessMessage("");
     };
 
-
     // Open delete confirmation
     const handleDeleteClick = (staff) => {
 
@@ -197,34 +161,23 @@ function StaffManagement() {
         setSuccessMessage("");
     };
 
-
     // Delete staff
-const handleDeleteStaff = async () => {
-    if (!staffToDelete) return;
+    const handleDeleteStaff = async () => {
 
-    try {
-        setDeleting(true);
-        setError("");
-        setSuccessMessage("");
+        if (!staffToDelete) {
+            return;
+        }
 
-        const token = localStorage.getItem("token");
+        try {
 
-        const response = await fetch(
-            `http://localhost:8080/api/staff/${staffToDelete.id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
+            setDeleting(true);
+            setError("");
+            setSuccessMessage("");
 
-        // Read response as text first
-        const responseText = await response.text();
+            await api.delete(
+                `/api/staff/${staffToDelete.id}`
+            );
 
-        // Successful deletion
-        if (response.ok) {
             setSuccessMessage(
                 `${staffToDelete.name} deleted successfully!`
             );
@@ -232,46 +185,43 @@ const handleDeleteStaff = async () => {
             setStaffToDelete(null);
 
             await loadStaff();
-            return;
-        }
 
-        // Staff has existing deliveries
-        if (response.status === 409) {
+        } catch (error) {
+
+            console.error("Delete staff error:", error);
+
+            if (error.response?.status === 409) {
+
+                setError(
+                    error.response?.data ||
+                    "Staff cannot be deleted because they have existing delivery assignments."
+                );
+
+                setStaffToDelete(null);
+                return;
+            }
+
+            if (error.response?.status === 404) {
+
+                setError("Staff member not found.");
+                setStaffToDelete(null);
+                return;
+            }
+
             setError(
-                responseText ||
-                "Staff cannot be deleted because they have existing delivery assignments."
+                error.response?.data?.message ||
+                error.response?.data ||
+                error.message ||
+                "Unable to delete staff"
             );
 
             setStaffToDelete(null);
-            return;
+
+        } finally {
+
+            setDeleting(false);
         }
-
-        // Staff not found
-        if (response.status === 404) {
-            setError("Staff member not found.");
-            setStaffToDelete(null);
-            return;
-        }
-
-        // Other errors
-        throw new Error(
-            responseText || "Failed to delete staff"
-        );
-
-    } catch (error) {
-        console.error("Delete staff error:", error);
-
-        setError(
-            error.message || "Unable to delete staff"
-        );
-
-        setStaffToDelete(null);
-
-    } finally {
-        setDeleting(false);
-    }
-};
-
+    };
 
     return (
         <div className="staff-management">
@@ -292,7 +242,6 @@ const handleDeleteStaff = async () => {
 
             </div>
 
-
             {/* Back Button */}
 
             <button
@@ -301,7 +250,6 @@ const handleDeleteStaff = async () => {
             >
                 ← Back to Dashboard
             </button>
-
 
             {/* Messages */}
 
@@ -317,7 +265,6 @@ const handleDeleteStaff = async () => {
                 </div>
             )}
 
-
             {/* Staff Section */}
 
             <div className="staff-list-container">
@@ -332,7 +279,6 @@ const handleDeleteStaff = async () => {
                             {staffList.length !== 1 ? "s" : ""}
                         </p>
                     </div>
-
 
                     {/* Add Staff */}
 
@@ -361,7 +307,6 @@ const handleDeleteStaff = async () => {
 
                 </div>
 
-
                 {/* Add / Edit Staff Form */}
 
                 {showAddForm && (
@@ -386,7 +331,6 @@ const handleDeleteStaff = async () => {
 
                             </div>
 
-
                             <button
                                 type="button"
                                 className="close-form-button"
@@ -399,7 +343,6 @@ const handleDeleteStaff = async () => {
                             </button>
 
                         </div>
-
 
                         <form onSubmit={handleCreateStaff}>
 
@@ -422,7 +365,6 @@ const handleDeleteStaff = async () => {
 
                                 </div>
 
-
                                 {/* Email */}
 
                                 <div className="form-group">
@@ -440,7 +382,6 @@ const handleDeleteStaff = async () => {
 
                                 </div>
 
-
                                 {/* Phone */}
 
                                 <div className="form-group">
@@ -457,7 +398,6 @@ const handleDeleteStaff = async () => {
                                     />
 
                                 </div>
-
 
                                 {/* Password */}
 
@@ -480,7 +420,6 @@ const handleDeleteStaff = async () => {
 
                                 </div>
 
-
                                 {/* Location */}
 
                                 <div className="form-group">
@@ -497,7 +436,6 @@ const handleDeleteStaff = async () => {
                                     />
 
                                 </div>
-
 
                                 {/* Role */}
 
@@ -525,7 +463,6 @@ const handleDeleteStaff = async () => {
 
                             </div>
 
-
                             {/* Form Actions */}
 
                             <div className="form-actions">
@@ -540,7 +477,6 @@ const handleDeleteStaff = async () => {
                                 >
                                     Cancel
                                 </button>
-
 
                                 <button
                                     type="submit"
@@ -561,7 +497,6 @@ const handleDeleteStaff = async () => {
                     </div>
                 )}
 
-
                 {/* Loading */}
 
                 {loading && (
@@ -569,7 +504,6 @@ const handleDeleteStaff = async () => {
                         Loading staff members...
                     </div>
                 )}
-
 
                 {/* Empty */}
 
@@ -582,7 +516,6 @@ const handleDeleteStaff = async () => {
                         </div>
                     )
                 }
-
 
                 {/* Staff Table */}
 
@@ -609,7 +542,6 @@ const handleDeleteStaff = async () => {
                                     </tr>
 
                                 </thead>
-
 
                                 <tbody>
 
@@ -662,7 +594,6 @@ const handleDeleteStaff = async () => {
                                                         Edit
                                                     </button>
 
-
                                                     {/* Delete */}
 
                                                     <button
@@ -691,7 +622,6 @@ const handleDeleteStaff = async () => {
 
             </div>
 
-
             {/* Delete Confirmation Modal */}
 
             {staffToDelete && (
@@ -704,22 +634,18 @@ const handleDeleteStaff = async () => {
                             !
                         </div>
 
-
                         <h2>
                             Delete Staff?
                         </h2>
-
 
                         <p>
                             Are you sure you want to delete
                             <strong> {staffToDelete.name}</strong>?
                         </p>
 
-
                         <p className="delete-warning">
                             This action cannot be undone.
                         </p>
-
 
                         <div className="delete-modal-actions">
 
@@ -730,7 +656,6 @@ const handleDeleteStaff = async () => {
                             >
                                 Cancel
                             </button>
-
 
                             <button
                                 className="delete-confirm-button"
